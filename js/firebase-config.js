@@ -29,7 +29,7 @@ firebase.initializeApp(firebaseConfig);
 // Initialize Firebase services and export references
 const auth = firebase.auth();
 const db = firebase.firestore();
-const functions = firebase.functions();
+const functions = (typeof firebase.functions === 'function') ? firebase.functions() : null;
 
 // Optional: Connect to emulators in development
 // Uncomment the lines below if using Firebase Local Emulator Suite
