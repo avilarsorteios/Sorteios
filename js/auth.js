@@ -34,11 +34,31 @@ async function registerUser(name, email, password, cpf = '') {
     });
 
     showToast('Conta criada com sucesso!', 'success');
-    window.location.href = '/dashboard.html';
+    await redirectByRole(user.uid);
   } catch (error) {
     showToast(getAuthErrorMessage(error.code), 'error');
   } finally {
     hideLoader();
+  }
+}
+
+// ============ Role-based Redirect ============
+
+/**
+ * Look up the user's role in Firestore and send them to the right page.
+ * Admins go to /admin/, everyone else goes to /user/dashboard.html.
+ */
+async function redirectByRole(uid) {
+  try {
+    const doc = await db.collection('users').doc(uid).get();
+    const role = doc.exists ? doc.data().role : 'user';
+    if (role === 'admin') {
+      window.location.href = 'admin/index.html';
+    } else {
+      window.location.href = 'user/dashboard.html';
+    }
+  } catch (e) {
+    window.location.href = 'user/dashboard.html';
   }
 }
 
@@ -50,9 +70,9 @@ async function registerUser(name, email, password, cpf = '') {
 async function loginUser(email, password) {
   try {
     showLoader();
-    await auth.signInWithEmailAndPassword(email, password);
+    const credential = await auth.signInWithEmailAndPassword(email, password);
     showToast('Login realizado com sucesso!', 'success');
-    window.location.href = '/dashboard.html';
+    await redirectByRole(credential.user.uid);
   } catch (error) {
     showToast(getAuthErrorMessage(error.code), 'error');
   } finally {
@@ -116,7 +136,7 @@ function observeAuthState(onLoggedIn, onLoggedOut) {
  */
 function redirectIfLoggedIn() {
   auth.onAuthStateChanged(user => {
-    if (user) window.location.href = '/dashboard.html';
+    if (user) redirectByRole(user.uid);
   });
 }
 
