@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comprar Números - Lote Premiado</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/compra.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <a href="../index.html" class="logo">Lote Premiado</a>
+      <nav class="nav-links">
+        <a href="dashboard.html">Minha Conta</a>
+        <a href="#" onclick="logout()">Sair</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:2rem;padding-bottom:2rem;">
+    <!-- Prize Info -->
+    <div class="card prize-info" id="prize-info">
+      <div class="prize-row">
+        <img id="prize-img" src="https://via.placeholder.com/300x200" alt="Prêmio">
+        <div>
+          <h2 id="prize-name">Carregando...</h2>
+          <p id="prize-price" style="color:var(--accent);font-size:1.2rem;font-weight:700;"></p>
+          <p id="prize-stats" style="color:var(--text-secondary);margin-top:0.5rem;"></p>
+          <div class="progress" style="margin-top:1rem;"><div class="progress-bar" id="prize-progress"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Selection Controls -->
+    <div class="card" style="margin-top:1.5rem;">
+      <h3>Escolha seus números</h3>
+      <div class="select-controls">
+        <div class="qty-row">
+          <label>Quantidade:</label>
+          <input type="number" id="qty-input" class="form-control" style="width:100px" min="1" value="1">
+          <button class="btn btn-secondary" id="btn-random">Escolha Aleatória</button>
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);margin-top:0.5rem;">Ou clique nos números abaixo para seleção manual.</p>
+      </div>
+    </div>
+
+    <!-- Numbers Grid -->
+    <div class="card" style="margin-top:1.5rem;">
+      <div class="numbers-legend">
+        <span><i class="dot available"></i> Disponível</span>
+        <span><i class="dot sold"></i> Vendido</span>
+        <span><i class="dot selected"></i> Selecionado</span>
+      </div>
+      <div class="numbers-grid" id="numbers-grid"></div>
+    </div>
+
+    <!-- Total and Payment -->
+    <div class="card" style="margin-top:1.5rem;">
+      <div class="total-row">
+        <span>Números selecionados: <strong id="selected-count">0</strong></span>
+        <span>Total: <strong id="total-price" style="color:var(--accent);font-size:1.3rem;">R$ 0,00</strong></span>
+      </div>
+      <div class="disclaimer">
+        <p>Este sorteio será realizado automaticamente somente após a venda de 100% dos números disponíveis. Após a confirmação do pagamento, seus números serão vinculados automaticamente à sua conta e passarão a concorrer ao prêmio.</p>
+      </div>
+      <label class="checkbox-row">
+        <input type="checkbox" id="accept-terms">
+        <span>Li e aceito os termos acima.</span>
+      </label>
+      <button class="btn btn-primary btn-block" id="btn-pagar" disabled>Pagar com PIX</button>
+    </div>
+  </main>
+
+  <!-- PIX Modal -->
+  <div class="modal-overlay" id="pix-modal">
+    <div class="modal">
+      <h3>Pagamento PIX</h3>
+      <p style="color:var(--text-secondary);margin-bottom:1rem;">Escaneie o QR Code ou copie o código</p>
+      <div id="qr-container" style="background:#fff;padding:1rem;border-radius:8px;display:inline-block;margin-bottom:1rem;">
+        <img id="qr-img" src="https://via.placeholder.com/200x200?text=QR+Code" alt="QR Code" style="width:200px;height:200px;">
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-secondary);">Código PIX:</p>
+      <input type="text" class="form-control" id="pix-code" readonly value="00020126..." style="margin-bottom:1rem;text-align:center;">
+      <button class="btn btn-secondary btn-sm" onclick="navigator.clipboard.writeText(document.getElementById('pix-code').value)">Copiar Código</button>
+      <p style="margin-top:1rem;"><span id="timer" style="color:var(--warning);font-weight:700;">10:00</span> para pagamento</p>
+      <button class="btn btn-secondary" style="margin-top:1rem;" onclick="document.getElementById('pix-modal').classList.remove('active')">Fechar</button>
+    </div>
+  </div>
+
+  <footer class="footer"><div class="container"><p>&copy; 2026 Lote Premiado</p></div></footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-functions-compat.js"></script>
+  <script src="../js/firebase-config.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/compra.js"></script>
+</body>
+</html>

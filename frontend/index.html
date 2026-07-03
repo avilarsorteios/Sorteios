@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lote Premiado - Sorteios Online</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .hero { text-align: center; padding: 3rem 1rem; }
+    .hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .hero p { color: var(--text-secondary); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+    .lote-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; }
+    .lote-card h3 { margin-bottom: 0.5rem; }
+    .lote-info { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.75rem 0; font-size: 0.85rem; color: var(--text-secondary); }
+    .lote-info span { background: var(--bg-primary); padding: 0.3rem 0.6rem; border-radius: 6px; }
+    .lote-card .progress { margin: 1rem 0; }
+    .lote-card .btn { width: 100%; margin-top: 0.5rem; }
+    .section-title { font-size: 1.5rem; margin: 2rem 0 1rem; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <span class="logo">Lote Premiado</span>
+      <nav class="nav-links">
+        <a href="login.html">Login</a>
+        <a href="register.html" class="btn btn-primary btn-sm">Cadastro</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Concorra a <span style="color:var(--accent)">prêmios incríveis</span></h1>
+      <p>Escolha seus números da sorte e participe dos nossos sorteios. Sorteio realizado automaticamente após 100% dos números vendidos.</p>
+    </section>
+
+    <h2 class="section-title">Sorteios Ativos</h2>
+    <div id="lotes-grid" class="grid grid-3">
+      <!-- Lotes loaded dynamically -->
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Lote Premiado. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    // Load active lotes
+    async function loadLotes() {
+      const grid = document.getElementById('lotes-grid');
+      const snapshot = await db.collection('lotes').where('status', '==', 'active').get();
+      if (snapshot.empty) {
+        grid.innerHTML = '<p style="color:var(--text-secondary)">Nenhum sorteio ativo no momento.</p>';
+        return;
+      }
+      grid.innerHTML = '';
+      snapshot.forEach(doc => {
+        const l = doc.data();
+        const sold = l.soldCount || 0;
+        const pct = Math.round((sold / l.totalNumbers) * 100);
+        grid.innerHTML += `
+          <div class="card lote-card">
+            <img src="${l.prizeImage || 'https://via.placeholder.com/400x200'}" alt="${l.prizeName}">
+            <h3>${l.prizeName}</h3>
+            <div class="lote-info">
+              <span>Preço: ${formatBRL(l.numberValue)}</span>
+              <span>Total: ${l.totalNumbers}</span>
+              <span>Vendidos: ${sold}</span>
+              <span>Disponíveis: ${l.totalNumbers - sold}</span>
+            </div>
+            <div class="progress"><div class="progress-bar" style="width:${pct}%"></div></div>
+            <small style="color:var(--text-secondary)">${pct}% vendido</small>
+            <a href="user/compra.html?id=${doc.id}" class="btn btn-primary">Comprar</a>
+          </div>`;
+      });
+    }
+    loadLotes();
+  </script>
+</body>
+</html>

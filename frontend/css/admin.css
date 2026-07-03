@@ -1,0 +1,22 @@
+.stat-card { text-align: center; }
+.stat-label { display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.5px; }
+.stat-value { display: block; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+
+.grid-4 { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+
+.admin-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 1rem; }
+.admin-table th, .admin-table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
+.admin-table th { color: var(--text-secondary); font-weight: 600; }
+.admin-table tr:hover { background: rgba(255,255,255,0.02); }
+
+.lote-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 0.5rem; }
+.lote-item:last-child { border: none; }
+.lote-actions { display: flex; gap: 0.4rem; }
+
+.financial-card { margin-bottom: 1rem; }
+.financial-card .fin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.75rem; margin-top: 0.75rem; }
+.fin-item { text-align: center; }
+.fin-item .fin-label { font-size: 0.75rem; color: var(--text-secondary); }
+.fin-item .fin-value { font-size: 1.1rem; font-weight: 600; }
+
+.draw-card { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 0.5rem; }

@@ -1,0 +1,12 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Regras temporarias abertas para desenvolvimento (expira 02/08/2026)
+    // Em producao, substituir por regras granulares abaixo
+    match /{document=**} {
+      allow read, write: if request.time < timestamp.date(2026, 8, 2);
+    }
+  }
+}

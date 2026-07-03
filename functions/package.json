@@ -1,0 +1,12 @@
+{
+  "name": "lote-premiado-functions",
+  "version": "1.0.0",
+  "engines": { "node": "18" },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^11.11.0",
+    "firebase-functions": "^4.5.0",
+    "mercadopago": "^2.0.0",
+    "cors": "^2.8.5"
+  }
+}
