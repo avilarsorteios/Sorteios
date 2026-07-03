@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Lote Premiado</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <span class="logo">Lote Premiado <span class="badge badge-warning">Admin</span></span>
+      <nav class="nav-links">
+        <a href="../index.html">Site</a>
+        <a href="#" onclick="logout()">Sair</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:2rem;">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="tab-dashboard">Dashboard</button>
+      <button class="tab-btn" data-tab="tab-lotes">Lotes</button>
+      <button class="tab-btn" data-tab="tab-financial">Financeiro</button>
+      <button class="tab-btn" data-tab="tab-users">Usuários</button>
+      <button class="tab-btn" data-tab="tab-draws">Sorteios</button>
+    </div>
+
+    <!-- Dashboard Tab -->
+    <div id="tab-dashboard" class="tab-content active">
+      <div class="grid grid-4" id="stats-grid">
+        <div class="card stat-card"><span class="stat-label">Receita Total</span><span class="stat-value" id="stat-revenue">R$ 0,00</span></div>
+        <div class="card stat-card"><span class="stat-label">Lucro</span><span class="stat-value" id="stat-profit">R$ 0,00</span></div>
+        <div class="card stat-card"><span class="stat-label">Usuários</span><span class="stat-value" id="stat-users">0</span></div>
+        <div class="card stat-card"><span class="stat-label">Lotes Ativos</span><span class="stat-value" id="stat-active">0</span></div>
+        <div class="card stat-card"><span class="stat-label">Lotes Encerrados</span><span class="stat-value" id="stat-closed">0</span></div>
+        <div class="card stat-card"><span class="stat-label">Números Vendidos</span><span class="stat-value" id="stat-sold">0</span></div>
+      </div>
+      <div class="grid grid-2" style="margin-top:1.5rem;">
+        <div class="card"><h3>Compras Recentes</h3><div id="recent-purchases"></div></div>
+        <div class="card"><h3>Últimos Ganhadores</h3><div id="recent-winners"></div></div>
+      </div>
+    </div>
+
+    <!-- Lotes Tab -->
+    <div id="tab-lotes" class="tab-content">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+        <h3>Gerenciar Lotes</h3>
+        <button class="btn btn-primary btn-sm" onclick="showLoteForm()">+ Novo Lote</button>
+      </div>
+      <!-- Lote Form -->
+      <div class="card lote-form" id="lote-form" style="display:none;margin-bottom:1.5rem;">
+        <h4 id="form-title">Criar Lote</h4>
+        <form id="lote-form-el">
+          <input type="hidden" id="lote-edit-id">
+          <div class="grid grid-2">
+            <div class="form-group"><label>Nome do Prêmio</label><input type="text" class="form-control" id="f-prize" required></div>
+            <div class="form-group"><label>URL da Imagem</label><input type="text" class="form-control" id="f-image"></div>
+            <div class="form-group"><label>Valor de Custo do Prêmio (R$)</label><input type="number" class="form-control" id="f-cost" step="0.01" required oninput="updateCalculation()"></div>
+            <div class="form-group"><label>Quantidade de Números</label><input type="number" class="form-control" id="f-qty" required oninput="updateCalculation()"></div>
+            <div class="form-group"><label>Data Limite (opcional)</label><input type="date" class="form-control" id="f-date"></div>
+            <div class="form-group"><label>Status</label><select class="form-control" id="f-status"><option value="active">Ativo</option><option value="finished">Finalizado</option><option value="cancelled">Cancelado</option></select></div>
+          </div>
+          <div class="card" style="background:var(--bg-primary);margin-top:1rem;padding:1rem;" id="calc-preview">
+            <p><strong>Cálculo Automático:</strong></p>
+            <p>Meta de arrecadação: <strong id="calc-meta">R$ 0,00</strong></p>
+            <p>Valor por número: <strong id="calc-number-value">R$ 0,00</strong></p>
+            <p style="font-size:0.8rem;color:var(--text-secondary);">Meta = Custo × 2 | Valor/número = Meta ÷ Quantidade</p>
+          </div>
+          <div style="display:flex;gap:0.5rem;margin-top:1rem;">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <button type="button" class="btn btn-secondary" onclick="hideLoteForm()">Cancelar</button>
+          </div>
+        </form>
+      </div>
+      <div id="lotes-list"></div>
+    </div>
+
+    <!-- Financial Tab -->
+    <div id="tab-financial" class="tab-content">
+      <h3>Detalhes Financeiros por Lote</h3>
+      <div id="financial-list" style="margin-top:1rem;"></div>
+    </div>
+
+    <!-- Users Tab -->
+    <div id="tab-users" class="tab-content">
+      <h3>Usuários Cadastrados</h3>
+      <table class="admin-table" id="users-table">
+        <thead><tr><th>Nome</th><th>E-mail</th><th>Compras</th><th>Cadastro</th></tr></thead>
+        <tbody id="users-body"></tbody>
+      </table>
+    </div>
+
+    <!-- Draws Tab -->
+    <div id="tab-draws" class="tab-content">
+      <h3>Realizar Sorteio</h3>
+      <p style="color:var(--text-secondary);margin-bottom:1rem;">Sorteios só podem ser realizados quando 100% dos números estiverem vendidos.</p>
+      <div id="draw-eligible"></div>
+      <h3 style="margin-top:2rem;">Histórico de Ganhadores</h3>
+      <div id="winners-history" style="margin-top:1rem;"></div>
+    </div>
+  </main>
+
+  <footer class="footer"><div class="container"><p>&copy; 2026 Lote Premiado - Painel Administrativo</p></div></footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-functions-compat.js"></script>
+  <script src="../js/firebase-config.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

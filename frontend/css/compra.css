@@ -1,0 +1,44 @@
+.prize-row { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+.prize-row img { width: 200px; height: 140px; object-fit: cover; border-radius: 8px; }
+.select-controls { margin-top: 1rem; }
+.qty-row { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+
+.numbers-legend { display: flex; gap: 1.5rem; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-secondary); }
+.dot { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 4px; vertical-align: middle; }
+.dot.available { background: var(--bg-primary); border: 1px solid var(--border); }
+.dot.sold { background: #555; }
+.dot.selected { background: var(--accent); }
+
+.numbers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 6px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 0.5rem 0;
+}
+.num-cell {
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.8rem;
+  font-family: monospace;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.15s;
+}
+.num-cell:hover:not(.sold) { border-color: var(--accent); }
+.num-cell.sold { background: #333; color: #666; cursor: not-allowed; }
+.num-cell.selected { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
+
+.total-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
+.disclaimer { background: var(--bg-primary); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+.checkbox-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; cursor: pointer; font-size: 0.9rem; }
+.checkbox-row input { width: 18px; height: 18px; accent-color: var(--accent); }
+
+@media (max-width: 768px) {
+  .prize-row img { width: 100%; height: 180px; }
+  .numbers-grid { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); }
+}
